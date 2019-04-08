@@ -126,7 +126,7 @@ def homepage():
     #     return render_template("flight.html", **context)
 
     # except:
-        return render_template("homepage.html")
+    return render_template("homepage.html")
 
 
 
