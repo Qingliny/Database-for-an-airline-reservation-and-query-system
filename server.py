@@ -106,8 +106,10 @@ def homepage():
     to_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'" % (to_city))
     from_ap = []
     to_ap = []
-    from_ap.append(from_airport[0])
-    to_ap.append(to_airport[0])
+    for result in from_airport:
+        from_ap.append(result[0])
+    for result in to_airport:
+        to_ap.append(to_airport[0])
     print from_ap,to_ap
 
     # based on the airport code and the departure date, find all the flights 
