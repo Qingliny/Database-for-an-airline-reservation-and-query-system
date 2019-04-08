@@ -9,7 +9,7 @@ app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = ' '
 
 # DATABASEURI = "postgresql://zz2551:9306@34.73.239.32/proj"
-DATABASEURI = " "
+DATABASEURI = "postgresql://zz2551:9306@34.73.21.127/proj1part2"
 
 engine = create_engine(DATABASEURI)
 
