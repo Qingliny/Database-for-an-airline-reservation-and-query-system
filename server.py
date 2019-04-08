@@ -46,7 +46,7 @@ def login_index():
 def login():
     cid = request.form['cid']
     session['cid'] = cid
-    password = request.form['password']
+    password = str(request.form['password'])
     error = None
 
     try:
