@@ -53,7 +53,7 @@ def login():
         print "step-1"
         login_success = g.conn.execute("SELECT cid FROM customer WHERE cid = %s AND password = '%s'" % (cid, password))
         print('You were successfully logged in')
-        return render_template("index.html")
+        return render_template("homepage.html")
     except Exception as e:
         error = str(e)
         print(error)
@@ -94,8 +94,8 @@ def homepage_index():
 
 @app.route('/homepage', methods = ['POST'])
 def homepage():
-    # if 'cid' not in session:
-    #     return render_template("login.html")
+    if 'cid' not in session:
+        return render_template("login.html")
     from_city = request.form['from_city']
     to_city = request.form['to_city']
     ddate = request.form['d_date']
