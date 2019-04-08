@@ -80,7 +80,7 @@ def register():
         g.conn.execute("INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,'%s','%s','%s','%s','%s')" %
           (cid,cname,password,phone_no,passport_no,email))
         session['cid'] = cid
-        return redirect("login")
+        return render_template("login.html")
     except Exception as e:
         error = str(e)
         print(error)
