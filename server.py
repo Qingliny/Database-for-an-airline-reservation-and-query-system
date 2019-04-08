@@ -117,20 +117,25 @@ def homepage():
     try:
         # find the flightno
         print "hereing!!!!!!!!!!!!!!!"
-        cursor = g.conn.execute("SELECT flightno,from_ap,to_ap FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+        cursor = g.conn.execute("SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+        # flight number
         flights = []
         for result in cursor:
-            flights.append(result['flightno'])  # can also be accessed using result[0]
+            flights.append(result)  # can also be accessed using result[0]
         cursor.close()
         context = dict(data = flights)
         print context
+
         return render_template("flight.html", **context)
+
     except:
         return render_template("homepage.html")
 
+#-------------------------------------tickets details------------------------------------#
 
-
-
+@app.route('/tickets/<ticket_no>')
+def tickets():
+    return render_template("homepage.html")
 
 
 
