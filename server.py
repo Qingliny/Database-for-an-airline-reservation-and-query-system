@@ -104,18 +104,23 @@ def homepage():
     # find the airport code of the corresponding city 
     from_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'" % (from_city))
     to_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'" % (to_city))
-    print from_airport,to_airport
+    from_ap = []
+    to_ap = []
+    from_ap.append(from_airport['apcode'])
+    to_ap.append(to_airport['apcode'])
+    print from_ap,to_ap
 
     # based on the airport code and the departure date, find all the flights 
     # flightno, from_ap, to_ap, ddate, dtime, adate, atime, price
     try:
         # find the flightno
-        cursor = g.conn.execute("SELECT flightno FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_airport, to_airport, ddate))
+        cursor = g.conn.execute("SELECT flightno FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
         flights = []
         for result in cursor:
             flights.append(result['flightno'])  # can also be accessed using result[0]
         cursor.close()
         context = dict(data = flights)
+        print context
 
         return render_template("flight.html", **context)
 
