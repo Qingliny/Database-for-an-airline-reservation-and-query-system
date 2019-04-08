@@ -116,10 +116,10 @@ def homepage():
             flights.append(result['name'])  # can also be accessed using result[0]
         cursor.close()
         print flights
+        return render_template("homepage.html")
 
-
-
-    return render_template("homepage.html")
+    except:
+        return render_template("homepage.html")
 
 
 
