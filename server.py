@@ -46,12 +46,11 @@ def login_index():
 def login():
     cid = request.form['cid']
     session['cid'] = cid
-    password = str(request.form['password'])
+    password = request.form['password']
     error = None
 
     try:
         print "step-1"
-#         login_success = g.conn.execute('SELECT cid FROM customer WHERE cid = %s AND password = %s' % (cid, password))
         login_success = g.conn.execute("SELECT cid FROM customer WHERE cid = %s AND password = '%s'" % (cid, password))
         print('You were successfully logged in')
         return render_template("index.html")
@@ -78,7 +77,7 @@ def register():
     email = request.form['email']
   
     try:
-        g.conn.execute('INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,%s,%s,%s,%s,%s)' %
+        g.conn.execute("INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,'%s','%s','%s','%s','%s')" %
           (cid,cname,password,phone_no,passport_no,email))
         session['cid'] = cid
         return redirect("login.html")
