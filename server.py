@@ -52,7 +52,7 @@ def login():
     try:
         print "step-1"
 #         login_success = g.conn.execute('SELECT cid FROM customer WHERE cid = %s AND password = %s' % (cid, password))
-        login_success = g.conn.execute('''SELECT cid FROM customer WHERE cid = %s AND password = "%s"''' % (cid, password))
+        login_success = g.conn.execute('SELECT cid FROM customer WHERE cid = %s AND password = '%s'' % (cid, password))
         print('You were successfully logged in')
         return render_template("index.html")
     except Exception as e:
