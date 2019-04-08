@@ -116,8 +116,11 @@ def homepage():
     # flightno, from_ap, to_ap, ddate, dtime, adate, atime, price
     try:
         # find the flightno
-        print "hereing!!!!!!!!!!!!!!!"
-        cursor = g.conn.execute("SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+        cursor = g.conn.execute(
+            # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+            "select * from flight natural join (select tickets.flightno,tickets.type,min(tickets.price) as lowestprice from (SELECT flightno FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')) as f left outer join tickets on f.flightno = tickets.flightno group by tickets.flightno,tickets.type) t" % 
+            (from_ap[0], to_ap[0], ddate)
+        )
         # flight number
         flights = []
         for result in cursor:
@@ -133,9 +136,15 @@ def homepage():
 
 #-------------------------------------tickets details------------------------------------#
 
-@app.route('/tickets/<ticket_no>')
-def tickets():
-    return render_template("homepage.html")
+@app.route('/tickets/<flightno>')
+def tickets(flightno):
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    try: 
+
+    except:
+        return render_template("flight.html")
 
 
 
