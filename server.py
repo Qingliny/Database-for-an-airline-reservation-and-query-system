@@ -36,12 +36,10 @@ Start
 def index():
     if session:
         session.clear()
-    print "hereing !!!!!!!!!!!!!!!"
     return render_template("login.html")
 #-------------------------------------login------------------------------------#
 @app.route('/login')
 def login_index():
-    print "this is !!!!!!!!!!!!!!!"
     return render_template("login.html")
 
 @app.route('/login', methods = ['POST'])
@@ -52,13 +50,17 @@ def login():
     error = None
 
     try:
+        print "step-1"
         login_success = g.conn.execute('SELECT cid FROM customer WHERE cid = %s AND password = %s' % (cid, password))
-        flash('You were successfully logged in')
-        return redirect('homepage.html', error = error)
-    except:
-        error = 'Invalid username or password. Please try again!'
+        print('You were successfully logged in')
+        return render_template("index.html")
+    except Exception as e:
+        error = str(e)
         print(error)
-    return render_template('login.html', error = error)
+
+        #error = 'Invalid username or password. Please try again!'
+        print(error)
+    return render_template("login.html", error = error)
 
 #-------------------------------------Register------------------------------------#
 @app.route('/register')
@@ -78,11 +80,11 @@ def register():
         g.conn.execute('INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,%s,%s,%s,%s,%s)' %
           (cid,cname,password,phone_no,passport_no,email))
         session['cid'] = cid
-        return redirect('login.html')
+        return redirect("login.html")
     except Exception as e:
         error = str(e)
         print(error)
-    return render_template('register.html')
+    return render_template("register.html")
 
 #-------------------------------------homepage------------------------------------#
 
