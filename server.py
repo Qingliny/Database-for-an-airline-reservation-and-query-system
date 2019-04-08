@@ -115,7 +115,8 @@ def homepage():
         for result in cursor:
             flights.append(result['name'])  # can also be accessed using result[0]
         cursor.close()
-        print flights
+        context = dict(data = flights)
+        print context
         return render_template("homepage.html")
 
     except:
