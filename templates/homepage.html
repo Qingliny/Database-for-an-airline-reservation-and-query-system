@@ -32,42 +32,44 @@
 <form method="POST" action="/homepage">
 <p>
     <p>Flying from: 
-    <select name="from_city" value="from_city" style="width: 100px">
-    <option value="Atlanta">Atlanta</option>
-    <option value="Los Angeles">Los Angeles</option>
-    <option value="Chicago">Chicago</option>
-    <option value="Dallas/Fort Worth">Dallas/Fort Worth</option>
-    <option value="Denver">Denver</option>
-    <option value="New York">New York</option>
-    <option value="San Francisco">San Francisco</option>
-    <option value="Las Vegas">Las Vegas</option>
-    <option value="Seattle/Tacoma">Seattle/Tacoma</option>
-    <option value="Charlotte">Charlotte</option>
-    </select>
+      <select name="from_city" value="from_city" style="width: 100px">
+      <option value="Atlanta">Atlanta</option>
+      <option value="Los Angeles">Los Angeles</option>
+      <option value="Chicago">Chicago</option>
+      <option value="Dallas/Fort Worth">Dallas/Fort Worth</option>
+      <option value="Denver">Denver</option>
+      <option value="New York">New York</option>
+      <option value="San Francisco">San Francisco</option>
+      <option value="Las Vegas">Las Vegas</option>
+      <option value="Seattle/Tacoma">Seattle/Tacoma</option>
+      <option value="Charlotte">Charlotte</option>
+      </select>
     </p> <!-- airport.city -->
     <p>Flying to: 
-    <select name="to_city" value="to_city" style="width: 100px">
-    <option value="Atlanta">Atlanta</option>
-    <option value="Los Angeles">Los Angeles</option>
-    <option value="Chicago">Chicago</option>
-    <option value="Dallas/Fort Worth">Dallas/Fort Worth</option>
-    <option value="Denver">Denver</option>
-    <option value="New York">New York</option>
-    <option value="San Francisco">San Francisco</option>
-    <option value="Las Vegas">Las Vegas</option>
-    <option value="Seattle/Tacoma">Seattle/Tacoma</option>
-    <option value="Charlotte">Charlotte</option>
-    </select>
+      <select name="to_city" value="to_city" style="width: 100px">
+      <option value="Atlanta">Atlanta</option>
+      <option value="Los Angeles">Los Angeles</option>
+      <option value="Chicago">Chicago</option>
+      <option value="Dallas/Fort Worth">Dallas/Fort Worth</option>
+      <option value="Denver">Denver</option>
+      <option value="New York">New York</option>
+      <option value="San Francisco">San Francisco</option>
+      <option value="Las Vegas">Las Vegas</option>
+      <option value="Seattle/Tacoma">Seattle/Tacoma</option>
+      <option value="Charlotte">Charlotte</option>
+      </select>
     </p>  <!-- airport.city -->
     <!-- --<p>Departing date: <input type="text" name="dtime"></p>  -->      <!-- departure_arrival.dtime --> 
     <!-- <p>Fare class: <input type="text" name="ticket_type"></p>  tickets.type --> 
-    <p>Date: <input type="text" id="datepicker" name='d_date'></p>
+    <!-- <p>Date: <input type="text" id="datepicker" name='d_date'></p> -->
+    <p>Date: 
+      <input type="date" name="d_date"></p>
     <p>Ticket Class:
-    <select name="ticket_type" value="ticket_type" style="width: 100px">
-    <option value="Economy">Economy</option>
-    <option value="Business">Business</option>
-    <option value="First Class ">First Class </option>
-    </select>
+      <select name="ticket_type" value="ticket_type" style="width: 100px">
+      <option value="Economy">Economy</option>
+      <option value="Business">Business</option>
+      <option value="First Class ">First Class </option>
+      </select>
     </p>
 
     <input type="submit" value="Apply"></p>
