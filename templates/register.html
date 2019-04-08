@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+<head>
+    <title>Register</title>
+</head>
+
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body>
+
+
+
+<form method="POST" action="/register">
+<p>
+
+    <p>Name: <input type="text" name="name"></p>
+    <p>SSN: <input type="text" name="cid"></p>
+    <p>Password: <input type="text" name="password"></p>
+    <p>Email address: <input type="text" name="email"></p>
+    <p>Passport Number: <input type="text" name="passport_no"></p>
+    <p>Phone Number: <input type="text" name="phone_no"></p>
+
+    <input type="submit" value="Register"></p>
+
+</form>
+
+</body>
+
+
+</html>
+{% endblock %}

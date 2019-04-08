@@ -8,8 +8,8 @@ tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
 app.secret_key = ' '
 
-DATABASEURI = "postgresql://zz2551:9306@34.73.21.127/proj1part2"
-# DATABASEURI = " "
+# DATABASEURI = "postgresql://zz2551:9306@34.73.239.32/proj"
+DATABASEURI = " "
 
 engine = create_engine(DATABASEURI)
 
@@ -75,14 +75,14 @@ def register():
   try:
     g.conn.execute('INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,%s,%s,%s,%s,%s)' %
       (cid,cname,password,phone_no,passport_no,email))
-    return redirect('login.html', session['cid'] = cid)
+    session['cid'] = cid
+    return redirect('login.html')
   except Exception as e:
     error = str(e)
     print(error)
   return render_template('register.html')
-  
-#-------------------------------------homepage------------------------------------#
 
+#-------------------------------------homepage------------------------------------#
 
 
 
