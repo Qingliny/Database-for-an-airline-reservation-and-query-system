@@ -100,8 +100,25 @@ def homepage():
     to_city = request.form['to_city']
     ddate = request.form['d_date']
     ticket_type = request.form['ticket_type'] 
-    print from_city,to_city,ddate,ticket_type
-    print type(from_city),type(to_city),type(ddate),type(ticket_type)
+
+    # find the airport code of the corresponding city 
+    from_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'" % from_city)
+    to_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'") % to_city
+    print from_airport,to_airport
+
+    # based on the airport code and the departure date, find all the flights 
+    # flightno, from_ap, to_ap, ddate, dtime, adate, atime, price
+    try:
+        # find the flightno
+        cursor = g.conn.execute("SELECT flightno FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_airport, to_airport, ddate))
+        flights = []
+        for result in cursor:
+            flights.append(result['name'])  # can also be accessed using result[0]
+        cursor.close()
+        print flights
+
+
+
     return render_template("homepage.html")
 
 
