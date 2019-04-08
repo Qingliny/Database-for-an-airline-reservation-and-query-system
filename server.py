@@ -36,7 +36,7 @@ Start
 def index():
     if session:
         session.clear()
-    return render_template("login.html")
+    return render_template("homepage.html")
 #-------------------------------------login------------------------------------#
 @app.route('/login')
 def login_index():
@@ -88,8 +88,30 @@ def register():
 
 #-------------------------------------homepage------------------------------------#
 
+@app.route('/homepage')
+def homepage_index():
+    return render_template("homepage.html")
+
+@app.route('/homepage', methods = ['POST'])
+def homepage():
+    # if 'cid' not in session:
+    #     return render_template("login.html")
+    from_city = request.form['from_city']
+    to_city = request.form['to_city']
+    ddate = request.form['d_date']
+    ticket_type = request.form['ticket_type'] 
+    print from_city,to_city,ddate,ticket_type
+    print type(from_city),type(to_city),type(ddate),type(ticket_type)
+    return render_template("homepage.html")
 
 
+
+
+
+
+
+
+#-------------------------------------run engin------------------------------------#
 
 if __name__ == "__main__":
     import click
