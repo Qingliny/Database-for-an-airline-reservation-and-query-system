@@ -138,11 +138,12 @@ def homepage():
 
 @app.route('/tickets/<flightno>')
 def tickets(flightno):
+    print(flightno)
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
     try: 
-
+        pass
     except:
         return render_template("flight.html")
 
