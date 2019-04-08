@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+<head>
+    <title>Register</title>
+</head>
+
+  <style>
+    body{ 
+      font-size: 15pt;
+      font-family: arial;
+    }
+  </style>
+
+
+<body>
+
+
+
+<form method="POST" action="/homepage">
+<p>
+
+    <p>Flying from: <input type="text" name="city"></p> <!-- airport.city -->
+    <p>Flying to: <input type="text" name="city"></p>  <!-- airport.city -->
+    <!-- --<p>Departing date: <input type="text" name="dtime"></p>  -->      <!-- departure_arrival.dtime --> 
+    <p>Fare class: <input type="text" name="type"></p> <!-- tickets.type -->
+
+
+    <input type="submit" value="Apply"></p>
+
+</form>
+
+</body>
+
+
+</html>
+{% endblock %}
