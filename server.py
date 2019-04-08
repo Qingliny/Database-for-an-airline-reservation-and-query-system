@@ -117,7 +117,7 @@ def homepage():
     try:
         # find the flightno
         print "hereing!!!!!!!!!!!!!!!"
-        cursor = g.conn.execute("SELECT flightno FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+        cursor = g.conn.execute("SELECT flightno,from_ap,to_ap FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
         flights = []
         for result in cursor:
             flights.append(result['flightno'])  # can also be accessed using result[0]
