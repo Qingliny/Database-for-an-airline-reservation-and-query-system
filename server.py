@@ -41,7 +41,7 @@ def index():
 #-------------------------------------login------------------------------------#
 @app.route('/login')
 def login_index():
-    print "this is !!!!!!!!!!!!!!!
+    print "this is !!!!!!!!!!!!!!!"
     return render_template("login.html")
 
 @app.route('/login', methods = ['POST'])
