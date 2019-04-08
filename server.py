@@ -36,7 +36,7 @@ Start
 def index():
     if session:
         session.clear()
-    return render_template("login.html")
+    return render_template("homepage.html")
 #-------------------------------------login------------------------------------#
 @app.route('/login')
 def login_index():
@@ -51,16 +51,16 @@ def login():
 
     try:
         print "step-1"
-        login_success = g.conn.execute('SELECT cid FROM customer WHERE cid = %s AND password = %s' % (cid, password))
+        login_success = g.conn.execute("SELECT cid FROM customer WHERE cid = %s AND password = '%s'" % (cid, password))
         print('You were successfully logged in')
-        return render_template('homepage.html')
+        return render_template("index.html")
     except Exception as e:
         error = str(e)
         print(error)
 
         #error = 'Invalid username or password. Please try again!'
         print(error)
-    return render_template('login.html', error = error)
+    return render_template("login.html", error = error)
 
 #-------------------------------------Register------------------------------------#
 @app.route('/register')
@@ -77,19 +77,59 @@ def register():
     email = request.form['email']
   
     try:
-        g.conn.execute('INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,%s,%s,%s,%s,%s)' %
+        g.conn.execute("INSERT INTO customer (cid,cname,password,phone_no,passport_no,email) VALUES(%s,'%s','%s','%s','%s','%s')" %
           (cid,cname,password,phone_no,passport_no,email))
         session['cid'] = cid
-        return redirect('login.html')
+        return render_template("login.html")
     except Exception as e:
         error = str(e)
         print(error)
-    return render_template('register.html')
+    return render_template("register.html")
 
 #-------------------------------------homepage------------------------------------#
 
+@app.route('/homepage')
+def homepage_index():
+    return render_template("homepage.html")
+
+@app.route('/homepage', methods = ['POST'])
+def homepage():
+    # if 'cid' not in session:
+    #     return render_template("login.html")
+    from_city = request.form['from_city']
+    to_city = request.form['to_city']
+    ddate = request.form['d_date']
+    ticket_type = request.form['ticket_type'] 
+
+    # find the airport code of the corresponding city 
+    from_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'" % (from_city))
+    to_airport = g.conn.execute("SELECT apcode FROM airport WHERE city = '%s'" % (to_city))
+    print from_airport,to_airport
+
+    # based on the airport code and the departure date, find all the flights 
+    # flightno, from_ap, to_ap, ddate, dtime, adate, atime, price
+    try:
+        # find the flightno
+        cursor = g.conn.execute("SELECT flightno FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_airport, to_airport, ddate))
+        flights = []
+        for result in cursor:
+            flights.append(result['flightno'])  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = flights)
+
+        return render_template("flight.html", **context)
+
+    except:
+        return render_template("homepage.html")
 
 
+
+
+
+
+
+
+#-------------------------------------run engin------------------------------------#
 
 if __name__ == "__main__":
     import click
