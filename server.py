@@ -85,7 +85,7 @@ def register():
         print(error)
     return render_template("register.html")
 
-#-------------------------------------homepage------------------------------------#
+#-------------------------------------homepage search------------------------------------#
 
 @app.route('/homepage')
 def homepage_index():
@@ -95,6 +95,7 @@ def homepage_index():
 def homepage():
     if 'cid' not in session:
         return render_template("login.html")
+    cid = session['cid']
     from_city = request.form['from_city']
     to_city = request.form['to_city']
     ddate = request.form['d_date']
@@ -133,7 +134,7 @@ def homepage():
     except:
         return render_template("homepage.html")
 
-#-------------------------------------tickets details------------------------------------#
+#-------------------------------------flight details------------------------------------#
 
 @app.route('/tickets/<flightno>')
 def tickets(flightno):
@@ -159,21 +160,48 @@ def tickets(flightno):
     except:
         return render_template("homepage.html")
 
-#-------------------------------------tickets details------------------------------------#
-@app.route('/tickets/<ticket_no>')
+#-------------------------------------tickets selection and booking------------------------------------#
+@app.route('/selection/<ticket_no>')
 def reserve(ticket_no):
     print(ticket_no)
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
     flightno = session['flightno']
+    session['ticket_no'] = ticket_no
+
     try:
         print "Hereing!!!!!!!!!!"
-        # g.conn.execute("INSERT INTO reservation (cid,ticket_no,flightno) VALUES('%s','%s','%s')" %
-        #   (cid,ticket_no,flightno))
-        # g.conn.execute("DELETE FROM tickets WHERE ticket_no = '%s'" % ticket_no)
-        # t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        return render_template("homepage.html")
+        # add the ticket record into reservation 
+        g.conn.execute("INSERT INTO reservation (cid,ticket_no,flightno) VALUES('%s','%s','%s')" %
+         (cid,ticket_no,flightno))
+        # extract the reserver code
+        print "extract the reserver code!!!!!!!!!!"
+        reservation = g.conn.execute("SELECT reserve_code from reservation where ticket_no = '%s'" % ticket_no)
+        reserve_code = []
+        for result in reservation:
+            reserve_code.append(result[0])
+        print reserve_code
+        # creat a new record of order
+        print "creat a new record of order!!!!!!!!!!"
+        time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        delay_time = '0 hour'
+        status = 'booked'
+        g.conn.execute("INSERT INTO forder (reserve_code, customer_id, time, delay, status VALUES ('%s','%s','%s','%s','%s')" % 
+            (reserve_code[0], cid, time_stamp, delay_time, status)
+            )
+        # delete the tickets from tickets!!!!!!!!!!
+        print "delete the tickets from tickets!!!!!!!!!!"
+        g.conn.execute("DELETE FROM tickets WHERE ticket_no = '%s'" % ticket_no)
+
+        # show orders
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        order_data = []
+        for result in cursor:
+            order_data.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = order_data)
+        return render_template("order.html",**context)
     except:
         return render_template("homepage.html")
 
@@ -186,9 +214,7 @@ def airplane(flightno):
     cid = session['cid']
     session['flightno'] = flightno
     try: 
-        print "Hereing!!!!!!!!!!!!!"
         airplane_name = g.conn.execute("select apname from airplane natural join airline natural join assigned_to where flightno = '%s'" % flightno)
-        print "Hereing!!!!!!!!!!!!!222222"
         apname = []
         for result in airplane_name:
             apname.append(result[0])
@@ -202,6 +228,7 @@ def airplane(flightno):
         cursor.close()
         context = dict(data = air_datas)
         # print context
+
         return render_template("airplane.html", **context)
     except:
         return render_template("homepage.html")
