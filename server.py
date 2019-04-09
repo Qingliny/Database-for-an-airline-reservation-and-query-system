@@ -143,9 +143,19 @@ def tickets(flightno):
         return render_template("login.html")
     cid = session['cid']
     try: 
-        pass
+        cursor = g.conn.execute(
+            # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+            "select * from tickets where flightno = '%s" % flightno
+        )
+        tickets = []
+        for result in cursor:
+            tickets.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = tickets)
+        print context
+        return render_template("tickets.html", **context)
     except:
-        return render_template("flight.html")
+        return render_template("flight.html",)
 
 
 
