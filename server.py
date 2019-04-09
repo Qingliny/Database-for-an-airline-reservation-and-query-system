@@ -181,10 +181,11 @@ def reserve(ticket_no):
 #-------------------------------------inquiry airplane and airline------------------------------------#
 @app.route('/airplane/<flightno>')
 def airplane(flightno):
+    print flightno
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
-    flightno = session['flightno']
+    session['flightno'] = flightno
     try: 
         airlane_name = g.conn.execute("select apname from airplane natural join airline natural join assigned_to where flightno = '%s'" % flightno)
         apname = []
