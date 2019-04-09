@@ -193,7 +193,7 @@ def airplane(flightno):
 
         cursor = g.conn.execute(
             # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
-            "select * from airplane natural join airline natural join assigned_to where apname = '%s'" % apname)
+            "select * from airplane natural join airline natural join assigned_to where apname = '%s'" % apname[0])
         air_datas = []
         for result in cursor:
             air_datas.append(result)  # can also be accessed using result[0]
