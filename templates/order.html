@@ -80,6 +80,23 @@
     onblur="if (value ==''){value='Reserve code..'}" > <input type="submit" value="Return">
 </p>
 </form>
+
+<form method="POST" action="/update">
+<p>Update My Flight Status: <input type="text" name="update_flight" value="Flight No..."
+    onfocus="if (value =='Flight No...'){value =''}"
+    onblur="if (value ==''){value='Flight No...'}">
+</p>
+<p>Delay Time: 
+      <select name="delay_time" value="time" style="width: 100px">
+      <option value="0 hour">0 hour</option>
+      <option value="0.5 hour">0.5 hour</option>
+      <option value="1 hour">1 hour</option>
+      <option value="2 hours">2 hours</option>
+      <option value="3 hours">3 hours</option>
+      <option value="4 hours">4 hours</option>
+      </select>    <input type="submit" value="Update Delay Information!">
+    </p>
+</form>
 </body>
 
 
