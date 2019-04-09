@@ -181,7 +181,6 @@ def reserve(ticket_no):
 #-------------------------------------inquiry airplane and airline------------------------------------#
 @app.route('/airplane/<flightno>')
 def airplane(flightno):
-    print(ticket_no)
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
