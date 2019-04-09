@@ -185,9 +185,11 @@ def reserve(ticket_no):
         # creat a new record of order
         print "creat a new record of order!!!!!!!!!!"
         time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        print time_stamp
         delay_time = '0 hour'
         status = 'booked'
-        g.conn.execute("INSERT INTO forder (reserve_code, customer_id, time, delay, status VALUES ('%s','%s','%s','%s','%s')" % 
+        print "Lets do this !!!!!!!!!!!!!!!!!!!"
+        g.conn.execute("INSERT INTO forder (reserve_code, customer_id, time, delay, status) VALUES ('%s','%s','%s','%s','%s')" % 
             (reserve_code[0], cid, time_stamp, delay_time, status)
             )
         # delete the tickets from tickets!!!!!!!!!!
