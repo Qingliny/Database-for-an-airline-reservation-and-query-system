@@ -195,7 +195,7 @@ def reserve(ticket_no):
             )
         # add the sold tickets into SoldTicket!!!!!!!!!!
         print "add the sold tickets into SoldTicket!!!!!!!!!!"
-        g.conn.execute("INSERT INTO SoldTickets from (select * from tickets where ticket_no = '%s')" % ticket_no)
+        g.conn.execute("INSERT INTO SoldTickets (select * from tickets where ticket_no = '%s')" % ticket_no)
 
         # delete the tickets from tickets!!!!!!!!!!
 
