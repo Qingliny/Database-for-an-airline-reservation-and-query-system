@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<html>
+  <style type="text/css">
+  table.dataintable{
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    width:100%;
+    border-collapse:collapse;
+    }
+
+  table.dataintable td,th 
+    {
+    font-size:1em;
+    border:1px solid #98bf21;
+    padding:3px 7px 2px 7px;
+    }
+
+  table.dataintable th 
+    {
+    font-size:1.1em;
+    text-align:left;
+    padding-top:5px;
+    padding-bottom:4px;
+    background-color:#A7C942;
+    color:#ffffff;
+    }
+
+  table.dataintable tr.alt td 
+    {
+    color:#000000;
+    background-color:#EAF2D3;
+    }
+  </style>
+
+<body>
+  <h1>Choose Your Tickets</h1>
+
+
+  <div>
+    {% for n in data %}
+    <div>
+
+
+      <table class="dataintable">
+
+      <tr>
+        <!-- order -->
+          <th>Reserve Code</th> 
+          <th>Booking Time</th>
+        <!-- reservation -->
+          <th>Flight No.</th>
+        <!-- tickets -->
+          <th>Price($)</th>
+        <!-- flight -->
+          <th>Departure Date</th>
+          <th>Departure time</th>
+        <!-- order -->
+          <th>Status</th>
+          <th>Delay</th>
+      </tr>
+      <tr>
+          <td>{{n[1]}}</td>
+          <td>{{n[2]}}</td>
+          <td>{{n[0]}}</td>
+          <td>{{n[5]}}</td>
+          <td>{{n[6]}}</td>
+          <td>{{n[7]}}</td>
+          <td>{{n[3]}}</td>
+          <td>{{n[4]}}</td>
+      </tr>
+    </table>
+    </div>
+    {% endfor %}
+  </div>
+
+</body>
+
+
+</html>
+{% endblock %}
