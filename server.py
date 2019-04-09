@@ -59,7 +59,6 @@ def login():
         print(error)
 
         #error = 'Invalid username or password. Please try again!'
-        print(error)
     return render_template("login.html", error = error)
 
 #-------------------------------------Register------------------------------------#
@@ -187,11 +186,12 @@ def airplane(flightno):
     cid = session['cid']
     session['flightno'] = flightno
     try: 
+        print "Hereing!!!!!!!!!!!!!"
         airlane_name = g.conn.execute("select apname from airplane natural join airline natural join assigned_to where flightno = '%s'" % flightno)
         apname = []
         for result in airplane_name:
             apname.append(result[0])
-
+        print apname
         cursor = g.conn.execute(
             # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
             "select * from airplane natural join airline natural join assigned_to where apname = '%s'" % apname[0])
