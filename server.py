@@ -138,13 +138,14 @@ def homepage():
 
 @app.route('/tickets/<flightno>')
 def tickets(flightno):
-    print(flightno)
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
-    print cid
+    session['flightno'] = flightno
+    print cid,flightno
+
     try: 
-        print "here!!!!!!!!!!!!"
+        
         cursor = g.conn.execute(
             # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
             "select * from tickets where flightno = '%s'" % flightno
@@ -154,13 +155,55 @@ def tickets(flightno):
             tickets.append(result)  # can also be accessed using result[0]
         cursor.close()
         context = dict(data = tickets)
-        print context
+        # print context
         return render_template("tickets.html", **context)
     except:
-        return render_template("tickets.html")
+        return render_template("homepage.html")
 
+#-------------------------------------tickets details------------------------------------#
+@app.route('/tickets/<ticket_no>')
+def reserve(ticket_no):
+    print(ticket_no)
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    flightno = session['flightno']
+    try:
+        print "Hereing!!!!!!!!!!"
+        # g.conn.execute("INSERT INTO reservation (cid,ticket_no,flightno) VALUES('%s','%s','%s')" %
+        #   (cid,ticket_no,flightno))
+        # g.conn.execute("DELETE FROM tickets WHERE ticket_no = '%s'" % ticket_no)
+        # t = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        return render_template("homepage.html")
+    except:
+        return render_template("homepage.html")
 
+#-------------------------------------inquiry airplane and airline------------------------------------#
+@app.route('/airplane/<flightno>')
+def airplane(flightno):
+    print(ticket_no)
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    flightno = session['flightno']
+    try: 
+        airlane_name = g.conn.execute("select apname from airplane natural join airline natural join assigned_to where flightno = '%s'" % flightno)
+        apname = []
+        for result in airplane_name:
+            apname.append(result[0])
 
+        cursor = g.conn.execute(
+            # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
+            "select * from airplane natural join airline natural join assigned_to where apname = '%s'" % apname)
+        air_datas = []
+        for result in cursor:
+            air_datas.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = air_datas)
+        # print context
+        return render_template("airplane.html", **context)
+    except:
+        return render_template("homepage.html")
 
 #-------------------------------------run engin------------------------------------#
 
