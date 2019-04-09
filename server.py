@@ -203,7 +203,7 @@ def reserve(ticket_no):
         g.conn.execute("DELETE FROM tickets WHERE ticket_no = '%s'" % ticket_no)
 
         # show orders
-        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
         order_data = []
         for result in cursor:
             order_data.append(result)  # can also be accessed using result[0]
@@ -258,3 +258,4 @@ if __name__ == "__main__":
 
 
     run()
+
