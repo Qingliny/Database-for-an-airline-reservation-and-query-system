@@ -34,7 +34,7 @@
   </style>
 
 <body>
-  <h1>Choose Your Tickets</h1>
+  <h1>View Your Orders!</h1>
 
 
   <div>
@@ -70,10 +70,16 @@
           <td>{{n[4]}}</td>
       </tr>
     </table>
+
     </div>
     {% endfor %}
   </div>
-
+<form method="POST" action="/return">
+<p>Return your tickets: <input type="text" name="return_ticket" value="Reserve code.."
+    onfocus="if (value =='Reserve code..'){value =''}"
+    onblur="if (value ==''){value='Reserve code..'}" > <input type="submit" value="Return">
+</p>
+</form>
 </body>
 
 
