@@ -85,6 +85,24 @@ def register():
         error = str(e)
         print(error)
     return render_template("register.html")
+#-------------------------------------View Orders----------------------------------------#
+@app.route('/order')
+def order_view():
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    try:
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        order_data = []
+        for result in cursor:
+            order_data.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = order_data)
+        return render_template("order.html",**context)
+    except:
+        return render_template("homepage.html")
+
+
 
 #-------------------------------------homepage search------------------------------------#
 
@@ -172,34 +190,34 @@ def reserve(ticket_no):
     session['ticket_no'] = ticket_no
 
     try:
-        print "Hereing!!!!!!!!!!"
+        # print "Hereing!!!!!!!!!!"
         # add the ticket record into reservation 
         g.conn.execute("INSERT INTO reservation (cid,ticket_no,flightno) VALUES('%s','%s','%s')" %
          (cid,ticket_no,flightno))
         # extract the reserver code
-        print "extract the reserver code!!!!!!!!!!"
+        # print "extract the reserver code!!!!!!!!!!"
         reservation = g.conn.execute("SELECT reserve_code from reservation where ticket_no = '%s'" % ticket_no)
         reserve_code = []
         for result in reservation:
             reserve_code.append(result[0])
         print reserve_code
         # creat a new record of order
-        print "creat a new record of order!!!!!!!!!!"
+        # print "creat a new record of order!!!!!!!!!!"
         time_stamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         print time_stamp
         delay_time = '0 hour'
         status = 'booked'
-        print "Lets do this !!!!!!!!!!!!!!!!!!!"
+        # print "Lets do this !!!!!!!!!!!!!!!!!!!"
         g.conn.execute("INSERT INTO forder (reserve_code, customer_id, time, delay, status) VALUES ('%s','%s','%s','%s','%s')" % 
             (reserve_code[0], cid, time_stamp, delay_time, status)
             )
         # add the sold tickets into SoldTicket!!!!!!!!!!
-        print "add the sold tickets into SoldTicket!!!!!!!!!!"
+        # print "add the sold tickets into SoldTicket!!!!!!!!!!"
         g.conn.execute("INSERT INTO SoldTickets (select * from tickets where ticket_no = '%s')" % ticket_no)
 
         # delete the tickets from tickets!!!!!!!!!!
 
-        print "delete the tickets from tickets!!!!!!!!!!"
+        # print "delete the tickets from tickets!!!!!!!!!!"
         g.conn.execute("DELETE FROM tickets WHERE ticket_no = '%s'" % ticket_no)
 
         # show orders
@@ -212,7 +230,65 @@ def reserve(ticket_no):
         return render_template("order.html",**context)
     except:
         return render_template("homepage.html")
+#-------------------------------------Return tickets------------------------------------#
+@app.route('/return', methods = ['POST'])
+def return_tickets():
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    reserve_code = request.form['return_ticket']
+    
+    # get corresponding ticket number
+    cursor = g.conn.execute("select ticket_no from reservation where reserve_code = '%s'" % reserve_code)
+    returned_tickets_no = []
+    for result in cursor:
+        returned_tickets_no.append(result[0])  # can also be accessed using result[0]
+    cursor.close()
+    print returned_tickets_no
 
+    try:
+        status = 'Returned'
+        # update the order information as status is returned
+        g.conn.execute("UPDATE forder SET status = '%s' WHERE reserve_code = '%s'" % (status,reserve_code))
+        g.conn.execute("INSERT INTO tickets (select * from SoldTickets where ticket_no = '%s')" % returned_tickets_no[0])
+        g.conn.execute("DELETE FROM SoldTickets WHERE ticket_no = '%s'" % returned_tickets_no[0])
+        
+        # return order.html
+    cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+    order_data = []
+    for result in cursor:
+        order_data.append(result)  # can also be accessed using result[0]
+    cursor.close()
+    context = dict(data = order_data)
+    return render_template("order.html",**context)
+#-------------------------------------Update Delay time of flight------------------------------------#
+@app.route('/update', methods = ['POST'])
+def return_tickets():
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    flightno = request.form['update_flight']
+    delay_time = request.form['delay_time']
+
+    # find the corresponding reservation code
+    cursor = g.conn.execute("select reserve_code from reservation where flightno = '%s'" % flightno)
+    update_reserve_code = []
+    for result in cursor:
+        update_reserve_code.append(result[0])  # can also be accessed using result[0]
+    cursor.close()
+    print update_reserve_code
+
+    try:
+        #update the order delay
+        g.conn.execute("UPDATE forder SET delay = '%s' WHERE reserve_code = '%s'" % (delay_time,update_reserve_code))
+
+    cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+    order_data = []
+    for result in cursor:
+        order_data.append(result)  # can also be accessed using result[0]
+    cursor.close()
+    context = dict(data = order_data)
+    return render_template("order.html",**context)
 #-------------------------------------inquiry airplane and airline------------------------------------#
 @app.route('/airplane/<flightno>')
 def airplane(flightno):
