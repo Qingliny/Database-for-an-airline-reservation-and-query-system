@@ -193,7 +193,12 @@ def reserve(ticket_no):
         g.conn.execute("INSERT INTO forder (reserve_code, customer_id, time, delay, status) VALUES ('%s','%s','%s','%s','%s')" % 
             (reserve_code[0], cid, time_stamp, delay_time, status)
             )
+        # add the sold tickets into SoldTicket!!!!!!!!!!
+        print "add the sold tickets into SoldTicket!!!!!!!!!!"
+        g.conn.execute("INSERT INTO SoldTicket from (select * from tickets where ticket_no = '%s')" % ticket_no)
+
         # delete the tickets from tickets!!!!!!!!!!
+
         print "delete the tickets from tickets!!!!!!!!!!"
         g.conn.execute("DELETE FROM tickets WHERE ticket_no = '%s'" % ticket_no)
 
