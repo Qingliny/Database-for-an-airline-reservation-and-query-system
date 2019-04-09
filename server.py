@@ -188,6 +188,7 @@ def airplane(flightno):
     try: 
         print "Hereing!!!!!!!!!!!!!"
         airlane_name = g.conn.execute("select apname from airplane natural join airline natural join assigned_to where flightno = '%s'" % flightno)
+        print "Hereing!!!!!!!!!!!!!222222"
         apname = []
         for result in airplane_name:
             apname.append(result[0])
