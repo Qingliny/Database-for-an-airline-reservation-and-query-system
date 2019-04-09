@@ -127,7 +127,7 @@ def homepage():
             flights.append(result)  # can also be accessed using result[0]
         cursor.close()
         context = dict(data = flights)
-        print context
+        # print context
 
         return render_template("flight.html", **context)
 
@@ -142,7 +142,9 @@ def tickets(flightno):
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
+    print cid
     try: 
+        print "here!!!!!!!!!!!!"
         cursor = g.conn.execute(
             # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
             "select * from tickets where flightno = '%s" % flightno
@@ -155,7 +157,7 @@ def tickets(flightno):
         print context
         return render_template("tickets.html", **context)
     except:
-        return render_template("flight.html",)
+        return render_template("tickets.html")
 
 
 
