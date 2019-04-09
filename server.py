@@ -147,7 +147,7 @@ def tickets(flightno):
         print "here!!!!!!!!!!!!"
         cursor = g.conn.execute(
             # "SELECT * FROM flight WHERE (from_ap, to_ap, ddate) = ('%s','%s','%s')" % (from_ap[0], to_ap[0], ddate))
-            "select * from tickets where flightno = '%s" % flightno
+            "select * from tickets where flightno = '%s'" % flightno
         )
         tickets = []
         for result in cursor:
