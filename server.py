@@ -161,7 +161,7 @@ def tickets(flightno):
         return render_template("homepage.html")
 
 #-------------------------------------tickets selection and booking------------------------------------#
-@app.route('/selection/<ticket_no>')
+@app.route('/tickets/selection/<ticket_no>')
 def reserve(ticket_no):
     print(ticket_no)
     if 'cid' not in session:
