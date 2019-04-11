@@ -267,7 +267,7 @@ def return_tickets():
 
 #-------------------------------------Update Delay time of flight------------------------------------#
 @app.route('/update', methods = ['POST'])
-def return_tickets():
+def update_delay():
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
