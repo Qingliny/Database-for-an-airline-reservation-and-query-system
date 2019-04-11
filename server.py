@@ -349,7 +349,4 @@ if __name__ == "__main__":
 
 
 
-with a as (select reserve_code,time,status,delay from forder),b as (select cid,ticket_no,reserve_code,flightno from reservation),c as (select ticket_no, flightno,price from soldtickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d where b.cid = '123456785';
-
-
 
