@@ -274,17 +274,20 @@ def update_delay():
     flightno = request.form['update_flight']
     delay_time = request.form['delay_time']
 
+
     # find the corresponding reservation code
     cursor = g.conn.execute("select reserve_code from reservation where flightno = '%s'" % flightno)
     update_reserve_code = []
     for result in cursor:
         update_reserve_code.append(result[0])  # can also be accessed using result[0]
     cursor.close()
-    print update_reserve_code
+    print delay_time, update_reserve_code
 
     try:
         #update the order delay
-        g.conn.execute("UPDATE forder SET delay = '%s' WHERE reserve_code = '%s'" % (delay_time,update_reserve_code))
+        
+        g.conn.execute("UPDATE forder SET delay = '%s' WHERE reserve_code = '%s'" % (delay_time,update_reserve_code[0]))
+        print "Hereing!!!!!!!!!!!!!!!!"
         cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
         order_data = []
         for result in cursor:
