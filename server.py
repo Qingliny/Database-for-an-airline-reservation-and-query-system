@@ -196,7 +196,7 @@ def reserve(ticket_no):
          (cid,ticket_no,flightno))
         # extract the reserver code
         # print "extract the reserver code!!!!!!!!!!"
-        reservation = g.conn.execute("SELECT reserve_code from reservation where ticket_no = '%s'" % ticket_no)
+        reservation = g.conn.execute("select * from reservation where cid = '%s' order by reserve_code desc limit 1" % cid)
         reserve_code = []
         for result in reservation:
             reserve_code.append(result[0])
