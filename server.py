@@ -285,14 +285,15 @@ def return_tickets():
     try:
         #update the order delay
         g.conn.execute("UPDATE forder SET delay = '%s' WHERE reserve_code = '%s'" % (delay_time,update_reserve_code))
-
-    cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
-    order_data = []
-    for result in cursor:
-        order_data.append(result)  # can also be accessed using result[0]
-    cursor.close()
-    context = dict(data = order_data)
-    return render_template("order.html",**context)
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        order_data = []
+        for result in cursor:
+            order_data.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = order_data)
+        return render_template("order.html",**context)
+    except:
+        return render_template("homepage.html")
 #-------------------------------------inquiry airplane and airline------------------------------------#
 @app.route('/airplane/<flightno>')
 def airplane(flightno):
