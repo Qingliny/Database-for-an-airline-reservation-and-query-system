@@ -95,7 +95,7 @@ def order_view():
         return render_template("login.html")
     cid = session['cid']
     try:
-        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from soldtickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder),b as (select cid,ticket_no,reserve_code,flightno from reservation),c as (select ticket_no, flightno,price from soldtickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d where b.cid = '%s'" % cid)
         order_data = []
         for result in cursor:
             order_data.append(result)  # can also be accessed using result[0]
@@ -346,4 +346,10 @@ if __name__ == "__main__":
 
 
     run()
+
+
+
+with a as (select reserve_code,time,status,delay from forder),b as (select cid,ticket_no,reserve_code,flightno from reservation),c as (select ticket_no, flightno,price from soldtickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d where b.cid = '123456785';
+
+
 
