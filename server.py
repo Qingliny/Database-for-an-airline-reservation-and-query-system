@@ -86,21 +86,21 @@ def register():
         print(error)
     return render_template("register.html")
 #-------------------------------------View Orders----------------------------------------#
-# @app.route('/order')
-# def order_view():
-#     if 'cid' not in session:
-#         return render_template("login.html")
-#     cid = session['cid']
-#     try:
-#         cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
-#         order_data = []
-#         for result in cursor:
-#             order_data.append(result)  # can also be accessed using result[0]
-#         cursor.close()
-#         context = dict(data = order_data)
-#         return render_template("order.html",**context)
-#     except:
-#         return render_template("homepage.html")
+@app.route('/order')
+def order_view():
+    if 'cid' not in session:
+        return render_template("login.html")
+    cid = session['cid']
+    try:
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        order_data = []
+        for result in cursor:
+            order_data.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = order_data)
+        return render_template("order.html",**context)
+    except:
+        return render_template("homepage.html")
 
 
 
@@ -254,13 +254,17 @@ def return_tickets():
         g.conn.execute("DELETE FROM SoldTickets WHERE ticket_no = '%s'" % returned_tickets_no[0])
         
         # return order.html
-    cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
-    order_data = []
-    for result in cursor:
-        order_data.append(result)  # can also be accessed using result[0]
-    cursor.close()
-    context = dict(data = order_data)
-    return render_template("order.html",**context)
+        cursor = g.conn.execute("with a as (select reserve_code,time,status,delay from forder), b as (select cid, reserve_code,flightno from reservation),c as (select flightno,price from tickets),d as (select flightno,ddate,dtime from flight) select * from a natural join b natural join c natural join d WHERE b.cid = '%s'" % cid)
+        order_data = []
+        for result in cursor:
+            order_data.append(result)  # can also be accessed using result[0]
+        cursor.close()
+        context = dict(data = order_data)
+        return render_template("order.html",**context)
+    except:
+        return render_template("homepage.html")
+
+
 #-------------------------------------Update Delay time of flight------------------------------------#
 @app.route('/update', methods = ['POST'])
 def return_tickets():
