@@ -264,9 +264,9 @@ def return_tickets():
         #     order_data.append(result)  # can also be accessed using result[0]
         # cursor.close()
         # context = dict(data = order_data)
-        return redirect('order.html')
+        return redirect('order')
     except:
-        return redirect('homepage.html')
+        return redirect('homepage')
 
 
 #-------------------------------------Update Delay time of flight------------------------------------#
