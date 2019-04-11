@@ -44,7 +44,7 @@ def login_index():
     if 'cid' not in session:
         return render_template("login.html")
     cid = session['cid']
-    return redirect(url_for('order'))
+    return redirect('order')
 
 @app.route('/login', methods = ['POST'])
 def login():
