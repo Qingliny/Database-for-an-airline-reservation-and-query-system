@@ -2,7 +2,7 @@ import os
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
 import time
-from flask import Flask, flash, request, render_template, g, redirect, Response, session
+from flask import Flask, flash, request, render_template, g, redirect, url_for, Response, session
 
 tmpl_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder=tmpl_dir)
@@ -199,7 +199,7 @@ def reserve(ticket_no):
          (cid,ticket_no,flightno))
         # extract the reserver code
         # print "extract the reserver code!!!!!!!!!!"
-        reservation = g.conn.execute("select * from reservation where cid = '%s' order by reserve_code desc limit 1" % cid)
+        reservation = g.conn.execute("select reserve_code from reservation where cid = '%s' order by reserve_code desc limit 1" % cid)
         reserve_code = []
         for result in reservation:
             reserve_code.append(result[0])
@@ -231,7 +231,7 @@ def reserve(ticket_no):
         # cursor.close()
         # context = dict(data = order_data)
         # return render_template("order.html",**context)
-        return redirect(url_for('order'))
+        return redirect('order')
     except:
         return render_template("homepage.html")
 #-------------------------------------Return tickets------------------------------------#
